@@ -14,7 +14,17 @@
   become: true
   tasks:
 
-  - name: install apache
-    apt:
-      name:
-        - apache2
+  - name: install Apache
+    package:
+      name: 
+        - "{{ apache_package }}"
+      state: latest
+      update_cache: yes
+   
+  - name: copy default html file
+    copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
