@@ -1,37 +1,50 @@
 services:
-  ssh-server-2:
-    image: rastasheep/ubuntu-sshd:18.04
-    container_name: ssh-server-2
+  server1:
+    build: .
+    container_name: server1
     networks:
       mynetwork:
-        ipv4_address: 172.28.0.2
+        ipv4_address: 192.168.1.101
     ports:
-      - "2222:22"
-    restart: always
+      - "2222:22"    # SSH
+      - "8081:80"    # HTTP
+    volumes:
+      - ./server_data/server_1:/var/www/html
+      - ./server_data/server_1:/var/log/apache2
+    tty: true
 
-  ssh-server-3:
-    image: rastasheep/ubuntu-sshd:18.04
-    container_name: ssh-server-3
+  server2:
+    build: .
+    container_name: server2
     networks:
       mynetwork:
-        ipv4_address: 172.28.0.3
+        ipv4_address: 192.168.1.102
     ports:
       - "2223:22"
-    restart: always
+      - "8082:80"
+    volumes:
+      - ./server_data/server_2:/var/www/html
+      - ./server_data/server_2:/var/log/apache2
+    tty: true
 
-  ssh-server-4:
-    image: rastasheep/ubuntu-sshd:18.04
-    container_name: ssh-server-4
+  server3:
+    build: .
+    container_name: server3
     networks:
       mynetwork:
-        ipv4_address: 172.28.0.4
+        ipv4_address: 192.168.1.103
     ports:
       - "2224:22"
-    restart: always
+      - "8083:80"
+    volumes:
+      - ./server_data/server_3:/var/www/html
+      - ./server_data/server_3:/var/log/apache2
+    tty: true
 
 networks:
   mynetwork:
     driver: bridge
     ipam:
       config:
-        - subnet: "172.28.0.0/16"
+        - subnet: "192.168.1.0/8"
+
